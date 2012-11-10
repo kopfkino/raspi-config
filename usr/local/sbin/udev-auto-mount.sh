@@ -1,0 +1,8 @@
+#!bin/sh
+TYPE=$1
+OPTIONS=$2
+DEVICE=$3
+POINT=$4
+mount -t $TYPE -o $OPTIONS $DEVICE $POINT
+exit 0
+

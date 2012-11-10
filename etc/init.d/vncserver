@@ -1,0 +1,47 @@
+#! /bin/sh
+
+### BEGIN INIT INFO
+# Provides:          vncserver
+# Required-Start:    $all
+# Required-Stop:     $all
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: starts the vncserver service
+# Description:       starts vncserver service
+### END INIT INFO
+
+PATH=/usr/local/bin:/usr/bin:/sbin:/bin
+DAEMON=/usr/bin/vncserver
+NAME=vncserver
+DESC=vncserver
+
+test -x $DAEMON || exit 0
+
+set -e
+
+case "$1" in
+  start)
+        echo -n "Starting $DESC: "
+	su pi -c '/usr/bin/vncserver :1 -geometry 1280x800'
+        echo "$NAME."
+        ;;
+  stop)
+        echo -n "Stopping $DESC: "
+	/usr/bin/vncserver -kill :1
+        echo "$NAME."
+        ;;
+  restart|force-reload)
+        echo -n "Restarting $DESC: "
+	su pi -c '/usr/bin/vncserver -kill :1'
+        sleep 1
+	su pi -c 'vncserver -geometry :1 1280x800'
+        echo "$NAME."
+        ;;
+  *)
+        N=/etc/init.d/$NAME
+        echo "Usage: $N {start|stop|restart|force-reload}" >&2
+        exit 1
+        ;;
+esac
+
+exit 0
